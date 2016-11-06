@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ThingSpeak Test</title>	
+	
+    <script>
+				
+        function fOnLoad()
+        {
+			document.getElementById("thingspeakupdate").onclick = UpdateData;
+		}
+
+        function UpdateData()
+		{
+			var apiWriteKey = document.getElementById("apiKey").value;
+			var field1 = document.getElementById("field1").value;
+			var field2 = document.getElementById("field2").value;
+			
+			alert("updating channel data: [" + field1 + "][" + field2 + "] using API write key " + apiWriteKey);
+			
+			UpdateThingSpeakChannel(apiWriteKey, field1, field2);
+		}
+		
+		function UpdateThingSpeakChannel(apiWriteKey, field1, field2)
+        {
+		    var HttpAgent = new XMLHttpRequest();
+            var URI = "http://api.thingspeak.com/update?";
+			URI += "key=" + apiWriteKey;
+			URI += "&field1=" + field1;
+			URI += "&field2=" + field2;
+ 
+			alert(URI);
+			
+            HttpAgent.open("POST", URI);
+            HttpAgent.send(); 
+			
+			var status = HttpAgent.status;
+			var responseText = HttpAgent.responseText;
+			
+			alert(status);
+			alert(responseText);
+						
+			// document.getElementById("status").value = HttpAgent.status;
+			// document.getElementById("response").value = HttpAgent.responseText;
+        }
+
+    </script>
+</head>
+<body onload="fOnLoad();">
+
+    <h1>HTML / JavaScript Demo: Update ThingSpeak Channel Data</h1>
+	
+	<form>
+	<table>
+	<tr>
+	<td><label for="apikeyLabel">Write API Key:</label></td>
+	<td><input id="apiKey" type="text" value="CKJLNNXMHDYQFABN"></td>
+	</tr>
+	<tr>
+	<td><label for="field1Label">Field1:</label></td>
+	<td><input id="field1" type="text" value="1"></td>
+	</tr>
+	<tr>
+	<td><label for="field2Label">Field2:</label></td>
+	<td><input id="field2" type="text" value="1"></td>
+	</tr>
+	<tr>
+	<td colspan="2">
+	<button type="button" id="thingspeakupdate"> Update </button>
+	</td>
+	</tr>
+	</table>
+	</form>
+	
+	<form> 
+	<label for="statusLabel">Status: 
+	<input id="status" type="text"> 
+	</label>
+	<label for="responseLabel">Response: 
+	<input id="response" type="text"> 
+	</label>
+	</form>
+		
+</body>
+</html>

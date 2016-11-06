@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>ThingSpeak Test</title>	
+	
+    <script>
+	
+        function fOnLoad()
+        {
+			document.getElementById("thingspeakget").onclick = GetData;
+	    }
+
+        function GetData()
+		{
+			var channelId = document.getElementById("channelId").value;
+				
+			// alert("getting data for channel id " + channelId);
+			
+			GetThingSpeakChannelData(channelId);
+		}
+		
+		function GetThingSpeakChannelData(channelId)
+        {
+		    var HttpAgent = new XMLHttpRequest();
+			
+			var URI = "https://api.thingspeak.com/channels/";
+			URI += channelId;
+			URI += "/feeds/last.json";
+ 
+			// alert(URI);
+			
+            HttpAgent.open("GET", URI, false);
+            HttpAgent.send(); 
+			
+			var status = HttpAgent.status;
+			var responseText = HttpAgent.responseText;			
+			
+			var response = JSON.parse(HttpAgent.responseText);
+			var field1Value = response.field1;
+			var field2Value = response.field2;
+			
+			document.getElementById("field1").value = field1Value;
+			document.getElementById("field2").value = field2Value;
+        }
+
+    </script>
+</head>
+<body onload="fOnLoad();">
+
+    <h1>HTML / JavaScript Demo: Update ThingSpeak Channel Data</h1>
+	
+	
+	<form>
+	<table>
+	<tr>
+	<td><label for="channelLabel">Channel ID:</label></td>
+	<td><input id="channelId" type="text" value="179756"></td>
+	</tr>
+	<tr>
+	<td colspan="2">
+	<button type="button" id="thingspeakget"> Get </button>
+	</td>
+	</tr>
+	<tr>
+	<td><label for="field1Label">Field1:</label></td>
+	<td><input id="field1" type="text" value=" "></td>
+	</tr>
+	<tr>
+	<td><label for="field2Label">Field2:</label></td>
+	<td><input id="field2" type="text" value=" "></td>
+	</tr>
+	</table>
+	
+	
+	<form>
+	<label for="statusLabel">Status: 
+	<input id="status" type="number"> 
+	</label>
+	<label for="responseLabel">Response: 
+	<input id="response" type="text"> 
+	</label>
+	</form>
+	
+		
+</body>
+</html>
